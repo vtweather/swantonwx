@@ -173,3 +173,97 @@ loadAlerts();
 
 // Check for new NWS alerts every 5 minutes
 setInterval(loadAlerts, 300000);
+
+// =====================================================
+// NATIONAL WEATHER SERVICE FORECAST
+// =====================================================
+
+const FORECAST_API =
+  "https://swantonwx-weather-e2ef.vtweather.workers.dev/forecast";
+
+async function loadForecast() {
+  const forecastGrid = document.getElementById("forecast-grid");
+
+  if (!forecastGrid) return;
+
+  try {
+    const response = await fetch(FORECAST_API, {
+      cache: "no-store"
+    });
+
+    if (!response.ok) {
+      throw new Error(`Forecast request failed: ${response.status}`);
+    }
+
+    const data = await response.json();
+    const periods = data.periods || [];
+
+    forecastGrid.innerHTML = "";
+
+    // Show the first 8 NWS forecast periods
+    periods.slice(0, 8).forEach((period) => {
+      const card = document.createElement("article");
+      card.className = "card forecast-card";
+
+      const name = document.createElement("h3");
+      name.textContent = period.name;
+
+      const icon = document.createElement("img");
+      icon.src = period.icon;
+      icon.alt = period.shortForecast || period.name;
+      icon.loading = "lazy";
+
+      const temperature = document.createElement("div");
+      temperature.className = "forecast-temp";
+      temperature.textContent =
+        `${period.temperature}°${period.temperatureUnit}`;
+
+      const conditions = document.createElement("p");
+      conditions.textContent = period.shortForecast;
+
+      const precipitation = document.createElement("small");
+
+      if (
+        period.probabilityOfPrecipitation !== null &&
+        period.probabilityOfPrecipitation !== undefined
+      ) {
+        precipitation.textContent =
+          `Precipitation: ${period.probabilityOfPrecipitation}%`;
+      }
+
+      const wind = document.createElement("small");
+      wind.textContent =
+        `Wind: ${period.windDirection} ${period.windSpeed}`;
+
+      card.appendChild(name);
+      card.appendChild(icon);
+      card.appendChild(temperature);
+      card.appendChild(conditions);
+
+      if (precipitation.textContent) {
+        card.appendChild(precipitation);
+      }
+
+      card.appendChild(document.createElement("br"));
+      card.appendChild(wind);
+
+      forecastGrid.appendChild(card);
+    });
+
+  } catch (error) {
+    console.error("NWS forecast error:", error);
+
+    forecastGrid.innerHTML = `
+      <article class="card">
+        <h3>Forecast Unavailable</h3>
+        <p>The National Weather Service forecast is temporarily unavailable.</p>
+      </article>
+    `;
+  }
+}
+
+// Load forecast immediately
+loadForecast();
+
+// Refresh the NWS forecast every 15 minutes
+setInterval(loadForecast, 900000);
