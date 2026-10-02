@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#0b2740">
+  <title>Swanton Village Weather | Swanton, Vermont</title>
+  <meta name="description" content="Hyperlocal weather conditions, alerts, history, snowfall and storm updates for Swanton Village, Vermont.">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header>
+  <div class="brand"><span class="logo">SWX</span><div><h1>Swanton Village Weather</h1><p>Swanton, Vermont • Lake Champlain Valley</p></div></div>
+  <nav>
+    <a href="#conditions">Conditions</a><a href="#alerts">Alerts</a><a href="#history">History</a>
+    <a href="#snow">Snowfall</a><a href="#camera">Weather Cam</a><a href="#updates">Updates</a>
+  </nav>
+</header>
+<main>
+  <section class="hero" id="conditions">
+    <div>
+      <p class="eyebrow">LIVE FROM SWANTON VILLAGE</p>
+      <h2>Weather from right here at home.</h2>
+      <p>Hyperlocal observations from a Davis weather station in Swanton Village, Vermont.</p>
+      <p class="station">Weather Underground station <strong>KVTSWANT4</strong></p>
+    </div>
+    <div class="current">
+      <span>Current conditions</span>
+      <strong id="temperature">Connecting soon</strong>
+      <small id="updated">Live station integration is the next step.</small>
+    </div>
+  </section>
+
+  <section id="alerts">
+    <h2>Weather Alerts</h2>
+    <div class="card alert"><strong>NWS alerts</strong><p>Active National Weather Service alerts affecting the Swanton area will appear here automatically.</p></div>
+  </section>
+
+  <section class="grid">
+    <article class="card"><h3>Temperature</h3><p>Current / High / Low</p><small>Davis station</small></article>
+    <article class="card"><h3>Wind</h3><p>Speed, direction & gusts</p><small>Davis station</small></article>
+    <article class="card"><h3>Rain</h3><p>Today / Month / Year</p><small>Station precipitation</small></article>
+    <article class="card"><h3>Pressure</h3><p>Barometer & trend</p><small>Station observations</small></article>
+  </section>
+
+  <section id="history"><h2>Weather History & Graphs</h2><div class="card wide"><p>Interactive temperature, wind, rainfall and pressure graphs with daily, monthly and yearly views.</p></div></section>
+  <section id="snow"><h2>Snowfall Tracker</h2><div class="card wide"><p>Season snowfall, individual storm totals and historical winter records for Swanton Village.</p></div></section>
+  <section id="camera"><h2>Live Weather Camera</h2><div class="camera"><span>Live camera feed coming soon</span></div></section>
+  <section id="updates"><h2>Storm Updates & Weather Blog</h2><div class="card wide"><p>Local forecasts, storm reports, snowfall updates and notable weather events will appear here.</p></div></section>
+</main>
+<footer><strong>Swanton Village Weather</strong><span>Independent local weather observations • Swanton, Vermont</span></footer>
+<script src="app.js"></script>
+</body>
+</html>
