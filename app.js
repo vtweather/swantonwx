@@ -293,7 +293,32 @@ async function loadTemperatureHistory() {
       .sort((a, b) =>
         a.observed_at.localeCompare(b.observed_at)
       );
+const todayVermont = new Intl.DateTimeFormat("en-CA", {
+  timeZone: "America/New_York",
+  year: "numeric",
+  month: "2-digit",
+  day: "2-digit"
+}).format(new Date());
 
+const todaysObservations = observations.filter(item => {
+  return item.observed_at.slice(0, 10) === todayVermont;
+});
+
+const highElement = document.getElementById("daily-high");
+const lowElement = document.getElementById("daily-low");
+
+if (todaysObservations.length > 0) {
+  const temperatures = todaysObservations.map(item => Number(item.temperature));
+
+  const dailyHigh = Math.max(...temperatures);
+  const dailyLow = Math.min(...temperatures);
+
+  if (highElement) highElement.textContent = dailyHigh.toFixed(1) + " °F";
+  if (lowElement) lowElement.textContent = dailyLow.toFixed(1) + " °F";
+} else {
+  if (highElement) highElement.textContent = "-- °F";
+  if (lowElement) lowElement.textContent = "-- °F";
+}
     if (observations.length < 2) {
       status.textContent = "Not enough historical data yet.";
       return;
