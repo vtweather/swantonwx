@@ -68,3 +68,53 @@
     padding: 18px;
   }
 }
+/* Daily High and Low Temperature Cards */
+
+.daily-extremes {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin: 20px 0 25px;
+}
+
+.daily-extremes > div {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 14px;
+  padding: 20px;
+  text-align: center;
+}
+
+.daily-extremes strong {
+  display: block;
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.daily-extremes p {
+  font-size: 30px;
+  font-weight: 700;
+  margin: 0;
+}
+
+#daily-high {
+  color: #ffb86b;
+}
+
+#daily-low {
+  color: #75d9ff;
+}
+
+@media (max-width: 480px) {
+  .daily-extremes {
+    gap: 10px;
+  }
+
+  .daily-extremes > div {
+    padding: 14px 8px;
+  }
+
+  .daily-extremes p {
+    font-size: 24px;
+  }
+}
