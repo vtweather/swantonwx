@@ -267,3 +267,107 @@ loadForecast();
 
 // Refresh the NWS forecast every 15 minutes
 setInterval(loadForecast, 900000);
+
+// HISTORICAL TEMPERATURE GRAPH
+
+const HISTORY_API =
+  "https://swantonwx-weather-e2ef.vtweather.workers.dev/history/";
+
+async function loadTemperatureHistory() {
+  const canvas = document.getElementById("temperature-chart");
+  const status = document.getElementById("history-status");
+
+  if (!canvas || !status) return;
+
+  try {
+    const response = await fetch(HISTORY_API + "?hours=24");
+
+    if (!response.ok) {
+      throw new Error("History request failed");
+    }
+
+    const data = await response.json();
+    const observations = (data.observations || [])
+      .filter(item => item.temperature != null)
+      .sort((a, b) =>
+        a.observed_at.localeCompare(b.observed_at)
+      );
+
+    if (observations.length < 2) {
+      status.textContent = "Not enough historical data yet.";
+      return;
+    }
+
+    const width = canvas.clientWidth || 600;
+    const height = 240;
+    const ratio = window.devicePixelRatio || 1;
+
+    canvas.width = width * ratio;
+    canvas.height = height * ratio;
+
+    const ctx = canvas.getContext("2d");
+    ctx.scale(ratio, ratio);
+
+    const padding = 35;
+    const temps = observations.map(item => item.temperature);
+    const min = Math.floor(Math.min(...temps) - 2);
+    const max = Math.ceil(Math.max(...temps) + 2);
+    const range = max - min || 1;
+
+    ctx.clearRect(0, 0, width, height);
+
+    ctx.strokeStyle = "#94a3b8";
+    ctx.fillStyle = "#64748b";
+    ctx.font = "12px sans-serif";
+    ctx.lineWidth = 1;
+
+    for (let i = 0; i <= 4; i++) {
+      const y = padding +
+        (i / 4) * (height - padding * 2);
+
+      const temp = max - (i / 4) * range;
+
+      ctx.beginPath();
+      ctx.moveTo(padding, y);
+      ctx.lineTo(width - 10, y);
+      ctx.stroke();
+
+      ctx.fillText(
+        temp.toFixed(0) + "°",
+        2,
+        y + 4
+      );
+    }
+
+    ctx.strokeStyle = "#38bdf8";
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+
+    observations.forEach((item, index) => {
+      const x = padding +
+        (index / (observations.length - 1)) *
+        (width - padding - 15);
+
+      const y = padding +
+        ((max - item.temperature) / range) *
+        (height - padding * 2);
+
+      if (index === 0) ctx.moveTo(x, y);
+      else ctx.lineTo(x, y);
+    });
+
+    ctx.stroke();
+
+    status.textContent =
+      "Showing " + observations.length +
+      " observations from the last 24 hours.";
+
+  } catch (error) {
+    console.error("Weather history error:", error);
+    status.textContent =
+      "Unable to load historical weather data.";
+  }
+}
+
+loadTemperatureHistory();
+setInterval(loadTemperatureHistory, 300000);
