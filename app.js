@@ -271,7 +271,7 @@ setInterval(loadForecast, 900000);
 // HISTORICAL TEMPERATURE GRAPH
 
 const HISTORY_API =
-  "https://swantonwx-weather-e2ef.vtweather.workers.dev/history/";
+ "https://swantonwx-weather-e2ef.vtweather.workers.dev/history";
 
 async function loadTemperatureHistory() {
   const canvas = document.getElementById("temperature-chart");
