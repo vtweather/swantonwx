@@ -324,7 +324,7 @@ if (todaysObservations.length > 0) {
       return;
     }
 
-    const width = canvas.parentElement.clientWidth - 20;
+    const width = Math.max(200, canvas.parentElement.getBoundingClientRect().width - 20);
     const height = 240;
     const ratio = window.devicePixelRatio || 1;
 
