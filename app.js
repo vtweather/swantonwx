@@ -309,7 +309,7 @@ async function loadTemperatureHistory() {
     const ctx = canvas.getContext("2d");
     ctx.scale(ratio, ratio);
 
-    const padding = 35;
+    const padding = 45;
     const temps = observations.map(item => item.temperature);
     const min = Math.floor(Math.min(...temps) - 2);
     const max = Math.ceil(Math.max(...temps) + 2);
@@ -358,6 +358,40 @@ async function loadTemperatureHistory() {
     });
 
     ctx.stroke();
+
+     // Display observation times in Vermont local time
+    ctx.fillStyle = "#e2e8f0";
+    ctx.font = "12px sans-serif";
+    ctx.textAlign = "center";
+
+    const timeIndexes = [
+      0,
+      Math.floor((observations.length - 1) / 4),
+      Math.floor((observations.length - 1) / 2),
+      Math.floor((observations.length - 1) * 3 / 4),
+      observations.length - 1
+    ];
+
+    timeIndexes.forEach(index => {
+      const item = observations[index];
+
+      // Observation timestamps are stored in Vermont local time
+      const timePart = item.observed_at.split(" ")[1];
+      if (!timePart) return;
+
+      const [hour, minute] = timePart.split(":").map(Number);
+      const period = hour >= 12 ? "PM" : "AM";
+      const displayHour = hour % 12 || 12;
+      const label = `${displayHour}:${String(minute).padStart(2, "0")} ${period}`;
+
+      const x = padding +
+        (index / (observations.length - 1)) *
+        (width - padding - 15);
+
+      ctx.fillText(label, x, height - 12);
+    });
+
+    ctx.textAlign = "left";
 
     status.textContent =
       "Showing " + observations.length +
