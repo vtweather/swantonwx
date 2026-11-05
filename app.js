@@ -287,6 +287,7 @@ async function loadTemperatureHistory() {
     }
 
     const data = await response.json();
+    console.log("History API response:", data);
     const observations = (data.observations || [])
       .filter(item => item.temperature != null)
       .sort((a, b) =>
