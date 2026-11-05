@@ -372,3 +372,105 @@ async function loadTemperatureHistory() {
 
 loadTemperatureHistory();
 setInterval(loadTemperatureHistory, 300000);
+
+
+async function loadWindHistory() {
+  const canvas = document.getElementById("wind-chart");
+  const status = document.getElementById("wind-history-status");
+
+  if (!canvas || !status) return;
+
+  try {
+    const response = await fetch(HISTORY_API + "?hours=24");
+
+    if (!response.ok) {
+      throw new Error("Wind history request failed");
+    }
+
+    const data = await response.json();
+
+    const observations = (data.observations || [])
+      .filter(item => item.wind_speed != null)
+      .sort((a, b) => a.observed_at.localeCompare(b.observed_at));
+
+    if (observations.length < 2) {
+      status.textContent = "Not enough wind history yet.";
+      return;
+    }
+
+    const width = canvas.clientWidth || 600;
+    const height = 240;
+    const ratio = window.devicePixelRatio || 1;
+
+    canvas.width = width * ratio;
+    canvas.height = height * ratio;
+
+    const ctx = canvas.getContext("2d");
+    ctx.scale(ratio, ratio);
+
+    const padding = 40;
+    const plotWidth = width - padding * 2;
+    const plotHeight = height - padding * 2;
+
+    const maxWind = Math.max(
+      5,
+      ...observations.map(item =>
+        Math.max(item.wind_speed || 0, item.wind_gust || 0)
+      )
+    );
+
+    const yMax = Math.ceil(maxWind / 5) * 5;
+
+    ctx.clearRect(0, 0, width, height);
+    ctx.font = "12px sans-serif";
+    ctx.lineWidth = 1;
+
+    for (let i = 0; i <= 4; i++) {
+      const value = (yMax / 4) * i;
+      const y = height - padding - (i / 4) * plotHeight;
+
+      ctx.strokeStyle = "#64748b";
+      ctx.beginPath();
+      ctx.moveTo(padding, y);
+      ctx.lineTo(width - padding, y);
+      ctx.stroke();
+
+      ctx.fillStyle = "#e2e8f0";
+      ctx.fillText(value.toFixed(1), 4, y + 4);
+    }
+
+    function drawLine(field, color) {
+      ctx.beginPath();
+      ctx.strokeStyle = color;
+      ctx.lineWidth = 3;
+
+      observations.forEach((item, index) => {
+        const x = padding +
+          (index / (observations.length - 1)) * plotWidth;
+
+        const y = height - padding -
+          ((item[field] || 0) / yMax) * plotHeight;
+
+        if (index === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      });
+
+      ctx.stroke();
+    }
+
+    drawLine("wind_speed", "#38bdf8");
+    drawLine("wind_gust", "#fbbf24");
+
+    status.textContent =
+      "Showing " + observations.length +
+      " wind observations from the last 24 hours. " +
+      "Blue = Wind Speed | Yellow = Wind Gusts (mph)";
+
+  } catch (error) {
+    console.error("Wind history error:", error);
+    status.textContent = "Unable to load wind history.";
+  }
+}
+
+loadWindHistory();
+setInterval(loadWindHistory, 300000);
