@@ -325,7 +325,7 @@ if (todaysObservations.length > 0) {
     }
 
     const width = Math.max(200, canvas.parentElement.getBoundingClientRect().width - 20);
-    const height = 240;
+    const height = window.innerWidth <= 600 ? 200 : 240;
     const ratio = window.devicePixelRatio || 1;
 
     canvas.width = width * ratio;
@@ -389,7 +389,12 @@ if (todaysObservations.length > 0) {
     ctx.font = "12px sans-serif";
     ctx.textAlign = "center";
 
-    const timeIndexes = [
+const isMobile = window.innerWidth <= 600;
+    const timeIndexes = isMobile ? [
+  0,
+  Math.floor((observations.length - 1) / 2),
+  observations.length - 1
+] : [
       0,
       Math.floor((observations.length - 1) / 4),
       Math.floor((observations.length - 1) / 2),
