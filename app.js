@@ -455,16 +455,35 @@ async function loadWindHistory() {
   if (!canvas || !status) return;
 
   try {
-    const response = await fetch(HISTORY_API + "?hours=24");
+    const response = await fetch(HISTORY_API + "?hours=48");
 
     if (!response.ok) {
       throw new Error("Wind history request failed");
     }
 
     const data = await response.json();
-    const observations = (data.observations || [])
-      .filter(item => item.wind_speed != null)
-      .sort((a, b) => a.observed_at.localeCompare(b.observed_at));
+    const todayVT = new Date().toLocaleDateString("en-CA", {
+  timeZone: "America/New_York",
+  year: "numeric",
+  month: "2-digit",
+  day: "2-digit"
+});
+
+const observations = (data.observations || [])
+  .filter(item => {
+    if (item.wind_speed == null || !item.observed_at) return false;
+
+    const observationDate = new Date(item.observed_at)
+      .toLocaleDateString("en-CA", {
+        timeZone: "America/New_York",
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit"
+      });
+
+    return observationDate === todayVT;
+  })
+  .sort((a, b) => a.observed_at.localeCompare(b.observed_at));
 const maxSustained = Math.max(
   0,
   ...observations
@@ -537,6 +556,40 @@ if (gustDisplay) {
     const padding = 40;
     const plotWidth = width - padding * 2;
     const plotHeight = height - padding * 2;
+    const now = new Date();
+
+const vtDateParts = new Intl.DateTimeFormat("en-US", {
+  timeZone: "America/New_York",
+  year: "numeric",
+  month: "2-digit",
+  day: "2-digit"
+}).formatToParts(now);
+
+const getPart = type =>
+  Number(vtDateParts.find(part => part.type === type).value);
+
+const year = getPart("year");
+const month = getPart("month");
+const day = getPart("day");
+
+const offsetHours = new Date(
+  Date.UTC(year, month - 1, day, 12)
+).toLocaleString("en-US", {
+  timeZone: "America/New_York",
+  timeZoneName: "short"
+}).includes("EDT") ? 4 : 5;
+
+const dayStart = Date.UTC(
+  year, month - 1, day, offsetHours
+);
+
+const nextDayStart = Date.UTC(
+  year, month - 1, day + 1, offsetHours
+);
+
+const timeToX = timestamp =>
+  padding + ((new Date(timestamp).getTime() - dayStart) /
+  (nextDayStart - dayStart)) * plotWidth;
 
     const maxWind = Math.max(
       5,
@@ -571,9 +624,7 @@ if (gustDisplay) {
       ctx.lineWidth = 1.5;
 
       observations.forEach((item, index) => {
-        const x = padding +
-          (index / (observations.length - 1)) * plotWidth;
-
+       const x = timeToX(item.observed_at);
         const y = height - padding -
           ((item[field] || 0) / yMax) * plotHeight;
 
@@ -594,8 +645,7 @@ observations.forEach((item, index) => {
 
   if (!Number.isFinite(gust) || gust <= 0) return;
 
-  const x = padding +
-    (index / (observations.length - 1)) * plotWidth;
+  const x = timeToX(item.observed_at);
 
   const y = height - padding -
     (gust / yMax) * plotHeight;
@@ -608,40 +658,33 @@ observations.forEach((item, index) => {
 ctx.fillStyle = "#e2e8f0";
 ctx.font = "12px sans-serif";
 
-const windTimeIndexes = [
-  0,
-  Math.floor((observations.length - 1) / 2),
-  observations.length - 1
+// Fixed midnight-to-midnight time labels
+const windTimeLabels = [
+  "12 AM",
+  "6 AM",
+  "12 PM",
+  "6 PM",
+  "12 AM"
 ];
 
-windTimeIndexes.forEach((index, position) => {
-  const item = observations[index];
-  if (!item || !item.observed_at) return;
-
-  const timePart = item.observed_at.split(" ")[1];
-  if (!timePart) return;
-
-  const [hour, minute] = timePart.split(":").map(Number);
-  const period = hour >= 12 ? "PM" : "AM";
-  const displayHour = hour % 12 || 12;
-  const label = `${displayHour}:${String(minute).padStart(2, "0")} ${period}`;
-
-  const x = padding +
-    (index / (observations.length - 1)) * plotWidth;
+windTimeLabels.forEach((label, index) => {
+  const x = padding + (index / 4) * plotWidth;
 
   ctx.textAlign =
-    position === 0 ? "left" :
-    position === 2 ? "right" : "center";
-ctx.fillStyle = "#e2e8f0";
-ctx.font = "12px sans-serif";
+    index === 0 ? "left" :
+    index === 4 ? "right" : "center";
+
+  ctx.fillStyle = "#e2e8f0";
+  ctx.font = "12px sans-serif";
   ctx.fillText(label, x, height - 12);
 });
 
 ctx.textAlign = "left";
-    status.textContent =
-      "Showing " + observations.length +
-      " wind observations from the last 24 hours. " +
-      "Blue = Wind Speed | Yellow = Wind Gusts (mph)";
+
+status.textContent =
+  "Showing " + observations.length +
+  " wind observations for today (12 AM - 12 AM Vermont time). " +
+  "Blue = Wind Speed | Yellow = Wind Gusts (mph)";
 
   } catch (error) {
     console.error("Wind history error:", error);
