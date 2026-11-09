@@ -466,9 +466,7 @@ async function loadWindHistory() {
     const observations = (data.observations || [])
       .filter(item => item.wind_speed != null)
       .sort((a, b) => a.observed_at.localeCompare(b.observed_at));
-calculateFiveMinuteAverage(observations).forEach((item, index) => {
-  observations[index].wind_avg_5min = item.wind_avg_5min;
-});
+
     if (observations.length < 2) {
       status.textContent = "Not enough wind history yet.";
       return;
