@@ -564,7 +564,6 @@ function calculateFiveMinuteAverage(observations) {
     }
 
     drawLine("wind_speed", "#38bdf8");
-    drawLine("wind_avg_5min", "#22c55e");
     
     // Draw wind gusts as yellow dots
 ctx.fillStyle = "#fbbf24";
