@@ -472,14 +472,44 @@ const maxSustained = Math.max(
     .map(item => Number(item.wind_speed))
     .filter(Number.isFinite)
 );
+    const maxSustainedObservation = observations.find(
+  item => Number(item.wind_speed) === maxSustained
+);
     const maxGust = Math.max(
   0,
   ...observations
     .map(item => Number(item.wind_gust))
     .filter(Number.isFinite)
 );
+    const maxGustObservation = observations.find(
+  item => Number(item.wind_gust) === maxGust
+);
+    const sustainedTimeDisplay = document.getElementById("max-sustained-time");
+
+if (sustainedTimeDisplay && maxSustainedObservation) {
+  sustainedTimeDisplay.textContent = "Recorded: " +
+    new Date(maxSustainedObservation.observed_at).toLocaleString("en-US", {
+      timeZone: "America/New_York",
+      month: "short",
+      day: "numeric",
+      hour: "numeric",
+      minute: "2-digit"
+    });
+}
     const sustainedDisplay = document.getElementById("max-sustained");
-const gustDisplay = document.getElementById("max-gust");
+    const gustTimeDisplay = document.getElementById("max-gust-time");
+
+if (gustTimeDisplay && maxGustObservation) {
+  gustTimeDisplay.textContent = "Recorded: " +
+    new Date(maxGustObservation.observed_at).toLocaleString("en-US", {
+      timeZone: "America/New_York",
+      month: "short",
+      day: "numeric",
+      hour: "numeric",
+      minute: "2-digit"
+    });
+}
+    const gustDisplay = document.getElementById("max-gust");
 
 if (sustainedDisplay) {
   sustainedDisplay.textContent = maxSustained.toFixed(1) + " mph";
