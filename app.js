@@ -301,9 +301,47 @@ const todayVermont = new Intl.DateTimeFormat("en-CA", {
 }).format(new Date());
 
 const todaysObservations = observations.filter(item => {
-  return item.observed_at.slice(0, 10) === todayVermont;
-});
+  const observationDate = new Date(item.observed_at)
+    .toLocaleDateString("en-CA", {
+      timeZone: "America/New_York",
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit"
+    });
 
+  return observationDate === todayVermont;
+});
+const now = new Date();
+
+const vermontParts = new Intl.DateTimeFormat("en-US", {
+  timeZone: "America/New_York",
+  year: "numeric",
+  month: "numeric",
+  day: "numeric"
+}).formatToParts(now);
+
+const getPart = type =>
+  Number(vermontParts.find(part => part.type === type).value);
+
+const year = getPart("year");
+const month = getPart("month");
+const day = getPart("day");
+
+function vermontMidnight(y, m, d) {
+  const date = new Date(Date.UTC(y, m - 1, d, 12));
+
+  const zone = new Intl.DateTimeFormat("en-US", {
+    timeZone: "America/New_York",
+    timeZoneName: "shortOffset"
+  }).format(date);
+
+  const offsetHours = zone.includes("-4") ? 4 : 5;
+
+  return Date.UTC(y, m - 1, d, offsetHours);
+}
+
+const dayStart = vermontMidnight(year, month, day);
+const nextDayStart = vermontMidnight(year, month, day + 1);
 const highElement = document.getElementById("daily-high");
 const lowElement = document.getElementById("daily-low");
 
@@ -370,9 +408,10 @@ if (todaysObservations.length > 0) {
     ctx.beginPath();
 
     observations.forEach((item, index) => {
-      const x = padding +
-        (index / (observations.length - 1)) *
-        (width - padding - 15);
+       const x = padding +
+    ((new Date(item.observed_at).getTime() - dayStart) /
+    (nextDayStart - dayStart)) *
+    (width - padding - 15);
 
       const y = padding +
         ((max - item.temperature) / range) *
@@ -390,48 +429,37 @@ if (todaysObservations.length > 0) {
     ctx.textAlign = "center";
 
 const isMobile = window.innerWidth <= 600;
-    const timeIndexes = isMobile ? [
-  0,
-  Math.floor((observations.length - 1) / 2),
-  observations.length - 1
-] : [
-      0,
-      Math.floor((observations.length - 1) / 4),
-      Math.floor((observations.length - 1) / 2),
-      Math.floor((observations.length - 1) * 3 / 4),
-      observations.length - 1
+
+// Fixed midnight-to-midnight Vermont time labels
+const timeLabels = isMobile
+  ? [
+      { hour: 0, label: "12 AM" },
+      { hour: 12, label: "12 PM" },
+      { hour: 24, label: "12 AM" }
+    ]
+  : [
+      { hour: 0, label: "12 AM" },
+      { hour: 6, label: "6 AM" },
+      { hour: 12, label: "12 PM" },
+      { hour: 18, label: "6 PM" },
+      { hour: 24, label: "12 AM" }
     ];
 
-    timeIndexes.forEach(index => {
-      const item = observations[index];
+ctx.fillStyle = "#e2e8f0";
+ctx.font = "12px sans-serif";
 
-      // Observation timestamps are stored in Vermont local time
-      const timePart = item.observed_at.split(" ")[1];
-      if (!timePart) return;
+timeLabels.forEach(({ hour, label }) => {
+  const x = padding +
+    (hour / 24) * (width - padding - 15);
 
-      const [hour, minute] = timePart.split(":").map(Number);
-      const period = hour >= 12 ? "PM" : "AM";
-      const displayHour = hour % 12 || 12;
-      const label = `${displayHour}:${String(minute).padStart(2, "0")} ${period}`;
+  ctx.textAlign =
+    hour === 0 ? "left" :
+    hour === 24 ? "right" : "center";
 
-      const x = padding +
-        (index / (observations.length - 1)) *
-        (width - padding - 15);
+  ctx.fillText(label, x, height - 12);
+});
 
-      if (isMobile) {
-  if (index === 0) {
-    ctx.textAlign = "left";
-  } else if (index === observations.length - 1) {
-    ctx.textAlign = "right";
-  } else {
-    ctx.textAlign = "center";
-  }
-}
-
-ctx.fillText(label, x, height - 12);
-    });
-
-    ctx.textAlign = "left";
+ctx.textAlign = "left";
 
     status.textContent =
       "Showing " + observations.length +
