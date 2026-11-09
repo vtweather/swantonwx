@@ -579,7 +579,8 @@ windTimeIndexes.forEach((index, position) => {
   ctx.textAlign =
     position === 0 ? "left" :
     position === 2 ? "right" : "center";
-
+ctx.fillStyle = "#e2e8f0";
+ctx.font = "12px sans-serif";
   ctx.fillText(label, x, height - 12);
 });
 
