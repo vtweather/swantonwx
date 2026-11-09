@@ -466,7 +466,9 @@ async function loadWindHistory() {
     const observations = (data.observations || [])
       .filter(item => item.wind_speed != null)
       .sort((a, b) => a.observed_at.localeCompare(b.observed_at));
-
+calculateFiveMinuteAverage(observations).forEach((item, index) => {
+  observations[index].wind_avg_5min = item.wind_avg_5min;
+});
     if (observations.length < 2) {
       status.textContent = "Not enough wind history yet.";
       return;
@@ -512,7 +514,36 @@ async function loadWindHistory() {
       ctx.fillStyle = "#e2e8f0";
       ctx.fillText(value.toFixed(1), 4, y + 4);
     }
+function calculateFiveMinuteAverage(observations) {
+  return observations.map((item, index) => {
+    const currentTime = new Date(item.observed_at).getTime();
 
+    if (!Number.isFinite(currentTime)) {
+      return { ...item, wind_avg_5min: null };
+    }
+
+    const speeds = observations
+      .slice(0, index + 1)
+      .filter(obs => {
+        const time = new Date(obs.observed_at).getTime();
+        const speed = Number(obs.wind_speed);
+
+        return Number.isFinite(time) &&
+          time >= currentTime - 5 * 60 * 1000 &&
+          time <= currentTime &&
+          obs.wind_speed != null &&
+          obs.wind_speed !== "" &&
+          Number.isFinite(speed);
+      })
+      .map(obs => Number(obs.wind_speed));
+
+    const average = speeds.length
+      ? speeds.reduce((sum, speed) => sum + speed, 0) / speeds.length
+      : null;
+
+    return { ...item, wind_avg_5min: average };
+  });
+}
     function drawLine(field, color) {
       ctx.beginPath();
       ctx.strokeStyle = color;
@@ -533,6 +564,8 @@ async function loadWindHistory() {
     }
 
     drawLine("wind_speed", "#38bdf8");
+    drawLine("wind_avg_5min", "#22c55e");
+    
     // Draw wind gusts as yellow dots
 ctx.fillStyle = "#fbbf24";
 
