@@ -473,7 +473,7 @@ async function loadWindHistory() {
     }
 
     const width = canvas.clientWidth || 600;
-    const height = 240;
+    const height = window.innerWidth <= 600 ? 220 : 240;
     const ratio = window.devicePixelRatio || 1;
 
     canvas.width = width * ratio;
@@ -539,7 +539,7 @@ ctx.fillStyle = "#fbbf24";
 observations.forEach((item, index) => {
   const gust = Number(item.wind_gust);
 
-  if (!Number.isFinite(gust)) return;
+  if (!Number.isFinite(gust) || gust <= 0) return;
 
   const x = padding +
     (index / (observations.length - 1)) * plotWidth;
@@ -551,7 +551,39 @@ observations.forEach((item, index) => {
   ctx.arc(x, y, 1.5, 0, Math.PI * 2);
   ctx.fill();
 });
+// Display wind observation times in Vermont local time
+ctx.fillStyle = "#e2e8f0";
+ctx.font = "12px sans-serif";
 
+const windTimeIndexes = [
+  0,
+  Math.floor((observations.length - 1) / 2),
+  observations.length - 1
+];
+
+windTimeIndexes.forEach((index, position) => {
+  const item = observations[index];
+  if (!item || !item.observed_at) return;
+
+  const timePart = item.observed_at.split(" ")[1];
+  if (!timePart) return;
+
+  const [hour, minute] = timePart.split(":").map(Number);
+  const period = hour >= 12 ? "PM" : "AM";
+  const displayHour = hour % 12 || 12;
+  const label = `${displayHour}:${String(minute).padStart(2, "0")} ${period}`;
+
+  const x = padding +
+    (index / (observations.length - 1)) * plotWidth;
+
+  ctx.textAlign =
+    position === 0 ? "left" :
+    position === 2 ? "right" : "center";
+
+  ctx.fillText(label, x, height - 12);
+});
+
+ctx.textAlign = "left";
     status.textContent =
       "Showing " + observations.length +
       " wind observations from the last 24 hours. " +
