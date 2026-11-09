@@ -533,7 +533,24 @@ async function loadWindHistory() {
     }
 
     drawLine("wind_speed", "#38bdf8");
-    drawLine("wind_gust", "#fbbf24");
+    // Draw wind gusts as yellow dots
+ctx.fillStyle = "#fbbf24";
+
+observations.forEach((item, index) => {
+  const gust = Number(item.wind_gust);
+
+  if (!Number.isFinite(gust)) return;
+
+  const x = padding +
+    (index / (observations.length - 1)) * plotWidth;
+
+  const y = height - padding -
+    (gust / yMax) * plotHeight;
+
+  ctx.beginPath();
+  ctx.arc(x, y, 1.5, 0, Math.PI * 2);
+  ctx.fill();
+});
 
     status.textContent =
       "Showing " + observations.length +
