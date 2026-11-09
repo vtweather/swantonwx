@@ -472,13 +472,24 @@ const maxSustained = Math.max(
     .map(item => Number(item.wind_speed))
     .filter(Number.isFinite)
 );
-
-const maxGust = Math.max(
+    const maxGust = Math.max(
   0,
   ...observations
     .map(item => Number(item.wind_gust))
     .filter(Number.isFinite)
 );
+    const sustainedDisplay = document.getElementById("max-sustained");
+const gustDisplay = document.getElementById("max-gust");
+
+if (sustainedDisplay) {
+  sustainedDisplay.textContent = maxSustained.toFixed(1) + " mph";
+}
+
+if (gustDisplay) {
+  gustDisplay.textContent = maxGust.toFixed(1) + " mph";
+}
+
+
     if (observations.length < 2) {
       status.textContent = "Not enough wind history yet.";
       return;
