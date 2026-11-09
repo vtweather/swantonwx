@@ -418,7 +418,17 @@ const isMobile = window.innerWidth <= 600;
         (index / (observations.length - 1)) *
         (width - padding - 15);
 
-      ctx.fillText(label, x, height - 12);
+      if (isMobile) {
+  if (index === 0) {
+    ctx.textAlign = "left";
+  } else if (index === observations.length - 1) {
+    ctx.textAlign = "right";
+  } else {
+    ctx.textAlign = "center";
+  }
+}
+
+ctx.fillText(label, x, height - 12);
     });
 
     ctx.textAlign = "left";
