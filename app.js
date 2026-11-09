@@ -516,7 +516,7 @@ async function loadWindHistory() {
     function drawLine(field, color) {
       ctx.beginPath();
       ctx.strokeStyle = color;
-      ctx.lineWidth = 3;
+      ctx.lineWidth = 1.5;
 
       observations.forEach((item, index) => {
         const x = padding +
