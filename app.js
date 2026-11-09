@@ -466,7 +466,19 @@ async function loadWindHistory() {
     const observations = (data.observations || [])
       .filter(item => item.wind_speed != null)
       .sort((a, b) => a.observed_at.localeCompare(b.observed_at));
+const maxSustained = Math.max(
+  0,
+  ...observations
+    .map(item => Number(item.wind_speed))
+    .filter(Number.isFinite)
+);
 
+const maxGust = Math.max(
+  0,
+  ...observations
+    .map(item => Number(item.wind_gust))
+    .filter(Number.isFinite)
+);
     if (observations.length < 2) {
       status.textContent = "Not enough wind history yet.";
       return;
