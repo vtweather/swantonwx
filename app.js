@@ -583,8 +583,15 @@ const dayStart = Date.UTC(
   year, month - 1, day, offsetHours
 );
 
+const nextDayOffsetHours = new Date(
+  Date.UTC(year, month - 1, day + 1, 12)
+).toLocaleString("en-US", {
+  timeZone: "America/New_York",
+  timeZoneName: "short"
+}).includes("EDT") ? 4 : 5;
+
 const nextDayStart = Date.UTC(
-  year, month - 1, day + 1, offsetHours
+  year, month - 1, day + 1, nextDayOffsetHours
 );
 
 const timeToX = timestamp =>
