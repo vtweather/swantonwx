@@ -462,7 +462,6 @@ async function loadWindHistory() {
     }
 
     const data = await response.json();
-console.log("Wind history sample:", data.observations?.[0]);
     const observations = (data.observations || [])
       .filter(item => item.wind_speed != null)
       .sort((a, b) => a.observed_at.localeCompare(b.observed_at));
