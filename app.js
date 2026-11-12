@@ -514,7 +514,7 @@ const observations = (data.observations || [])
   .filter(item => {
     if (item.wind_speed == null || !item.observed_at) return false;
 
-    const observationDate = new Date(item.observed_at)
+    const observationDate = parseVermontTime(item.observed_at)
       .toLocaleDateString("en-CA", {
         timeZone: "America/New_York",
         year: "numeric",
