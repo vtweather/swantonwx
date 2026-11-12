@@ -293,7 +293,20 @@ async function loadTemperatureHistory() {
       .sort((a, b) =>
         a.observed_at.localeCompare(b.observed_at)
       );
-const todayVermont = new Intl.DateTimeFormat("en-CA", {
+function parseVermontTime(timestamp) {
+  if (!timestamp) return new Date(NaN);
+
+  const normalized = timestamp.replace(" ", "T");
+
+  if (/[zZ]$|[+-]\d{2}:\d{2}$/.test(normalized)) {
+    return new Date(normalized);
+  }
+
+  // Interpret timestamps without a timezone as Vermont local time.
+  const offset = "-05:00"; // EST in November
+  return new Date(normalized + offset);
+}
+    const todayVermont = new Intl.DateTimeFormat("en-CA", {
   timeZone: "America/New_York",
   year: "numeric",
   month: "2-digit",
@@ -301,7 +314,7 @@ const todayVermont = new Intl.DateTimeFormat("en-CA", {
 }).format(new Date());
 
 const todaysObservations = observations.filter(item => {
-  const observationDate = new Date(item.observed_at)
+  const observationDate = parseVermontTime(item.observed_at)
     .toLocaleDateString("en-CA", {
       timeZone: "America/New_York",
       year: "numeric",
@@ -409,7 +422,7 @@ if (todaysObservations.length > 0) {
 
     observations.forEach((item, index) => {
        const x = padding +
-    ((new Date(item.observed_at).getTime() - dayStart) /
+    ((parseVermontTime(item.observed_at).getTime() - dayStart) /
     (nextDayStart - dayStart)) *
     (width - padding - 15);
 
