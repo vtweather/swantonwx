@@ -444,19 +444,13 @@ if (todaysObservations.length > 0) {
 const isMobile = window.innerWidth <= 600;
 
 // Fixed midnight-to-midnight Vermont time labels
-const timeLabels = isMobile
-  ? [
-      { hour: 0, label: "12 AM" },
-      { hour: 12, label: "12 PM" },
-      { hour: 24, label: "12 AM" }
-    ]
-  : [
-      { hour: 0, label: "12 AM" },
-      { hour: 6, label: "6 AM" },
-      { hour: 12, label: "12 PM" },
-      { hour: 18, label: "6 PM" },
-      { hour: 24, label: "12 AM" }
-    ];
+const timeLabels = [
+  { hour: 0, label: "12 AM" },
+  { hour: 6, label: "6 AM" },
+  { hour: 12, label: "12 PM" },
+  { hour: 18, label: "6 PM" },
+  { hour: 24, label: "12 AM" }
+];
 
 ctx.fillStyle = "#e2e8f0";
 ctx.font = "12px sans-serif";
