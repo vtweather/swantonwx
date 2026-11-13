@@ -409,12 +409,33 @@ const lowObservation = todaysObservations.find(item => Number(item.temperature) 
   if (highElement) highElement.textContent = dailyHigh.toFixed(1) + " °F";
   if (lowElement) lowElement.textContent = dailyLow.toFixed(1) + " °F";
   if (highTimeElement) highTimeElement.textContent = formatVermontTime(highObservation);
-if (lowTimeElement) lowTimeElement.textContent = formatVermontTime(lowObservation);
+  if (lowTimeElement) lowTimeElement.textContent = formatVermontTime(lowObservation);
+  const dashboardHighTime = document.getElementById("dashboard-high-time");
+  const dashboardLowTime = document.getElementById("dashboard-low-time");
+
+  if (dashboardHighTime) dashboardHighTime.textContent = highTimeElement.textContent;
+  if (dashboardLowTime) dashboardLowTime.textContent = lowTimeElement.textContent;
+  const dashboardHigh = document.getElementById("dashboard-high");
+  const dashboardLow = document.getElementById("dashboard-low");
+
+if (dashboardHigh) dashboardHigh.textContent = highElement.textContent;
+if (dashboardLow) dashboardLow.textContent = lowElement.textContent;
 } else {
   if (highElement) highElement.textContent = "-- °F";
   if (lowElement) lowElement.textContent = "-- °F";
   if (highTimeElement) highTimeElement.textContent = "Recorded: --";
 if (lowTimeElement) lowTimeElement.textContent = "Recorded: --";
+  if (document.getElementById("dashboard-high"))
+  document.getElementById("dashboard-high").textContent = "-- °F";
+
+if (document.getElementById("dashboard-low"))
+  document.getElementById("dashboard-low").textContent = "-- °F";
+
+if (document.getElementById("dashboard-high-time"))
+  document.getElementById("dashboard-high-time").textContent = "Recorded: --";
+
+if (document.getElementById("dashboard-low-time"))
+  document.getElementById("dashboard-low-time").textContent = "Recorded: --";
 }
     if (observations.length < 2) {
       if (status) status.textContent = "Not enough historical data yet.";
