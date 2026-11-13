@@ -298,3 +298,138 @@ header nav a:hover {
     margin-top: 0;
   }
 }
+
+/* SWANTONWX NEW HEADER DESIGN */
+
+.site-header {
+  background-image:
+    linear-gradient(
+      rgba(0, 10, 25, 0.08),
+      rgba(0, 10, 25, 0.12)
+    ),
+    url("swanton-sunset.png");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  padding: 0;
+  border-bottom: 0;
+}
+
+.site-header .weather-brand {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: nowrap;
+  gap: 30px;
+  min-height: 310px;
+  padding: 12px 35px;
+}
+
+.site-header .logo {
+  width: 32%;
+  max-width: 470px;
+  height: auto;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.site-header .brand-title {
+  flex: 1;
+  text-align: center;
+  min-width: 0;
+}
+
+.site-header .brand-title h1 {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(42px, 6.8vw, 112px);
+  font-weight: bold;
+  line-height: 0.95;
+  letter-spacing: -2px;
+  margin: 0;
+  color: white;
+  text-shadow: 3px 4px 5px #000;
+}
+
+.site-header .weather-word {
+  font-size: clamp(25px, 3.5vw, 52px);
+  font-weight: 800;
+  letter-spacing: 0.35em;
+  color: white;
+  text-shadow: 2px 3px 4px #000;
+  margin: 8px 0;
+}
+
+.site-header .brand-title p {
+  font-size: clamp(11px, 1.45vw, 22px);
+  letter-spacing: 0.2em;
+  color: white;
+  margin: 10px 0 0;
+  text-shadow: 1px 2px 3px #000;
+}
+
+.site-header .main-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  flex-wrap: nowrap;
+  gap: 5px;
+  padding: 7px 20px;
+  background: rgba(2, 24, 44, 0.95);
+  border-top: 1px solid #3974a0;
+  border-bottom: 1px solid #3974a0;
+  overflow-x: auto;
+}
+
+.site-header .main-nav a {
+  color: white;
+  font-size: 16px;
+  font-weight: 500;
+  white-space: nowrap;
+  text-decoration: none;
+  padding: 12px 14px;
+  border-radius: 10px;
+  flex-shrink: 0;
+}
+
+.site-header .main-nav a:first-child {
+  background: linear-gradient(#2198ff, #006ddc);
+}
+
+@media (max-width: 768px) {
+  .site-header .weather-brand {
+    flex-direction: column;
+    gap: 10px;
+    min-height: 0;
+    padding: 25px 15px;
+  }
+
+  .site-header .logo {
+    width: 65%;
+    max-width: 290px;
+  }
+
+  .site-header .brand-title h1 {
+    font-size: clamp(34px, 8vw, 55px);
+    letter-spacing: -1px;
+  }
+
+  .site-header .weather-word {
+    font-size: 25px;
+    letter-spacing: 0.25em;
+  }
+
+  .site-header .brand-title p {
+    font-size: 10px;
+    letter-spacing: 0.1em;
+  }
+
+  .site-header .main-nav {
+    justify-content: flex-start;
+    padding: 8px;
+  }
+
+  .site-header .main-nav a {
+    font-size: 13px;
+    padding: 10px 12px;
+  }
+}
