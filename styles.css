@@ -5,7 +5,7 @@ header {
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
-  padding: 75px max(5vw, 24px);
+  padding: 35px max(5vw, 24px);
   border-bottom: 1px solid #28475e;
 }
 .brand {
@@ -205,5 +205,85 @@ header {
 @media (max-width: 360px) {
   .current-details {
     grid-template-columns: 1fr;
+  }
+}
+
+xt-align: center;
+}
+
+/* Mobile header layout */
+@media (max-width: 768px) {
+  .weather-brand {
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    text-align: center;
+  }
+
+  .weather-brand .logo {
+    width: 75%;
+    max-width: 300px;
+    height: auto;
+  }
+
+  .weather-brand > div {
+    width: 100%;
+    text-align: center;
+  }
+
+  .weather-brand h1 {
+    font-size: 28px;
+    line-height: 1.2;
+  }
+
+  .weather-brand p {
+    font-size: 14px;
+  }
+}
+
+/* Main website title */
+.weather-brand h1 {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(32px, 4.5vw, 76px);
+  font-weight: 700;
+  color: #ffffff;
+  line-height: 1.1;
+  margin-bottom: 12px;
+  text-shadow: 2px 3px 6px rgba(0, 0, 0, 0.8);
+}
+
+/* Website subtitle */
+.weather-brand p {
+  color: #ffffff;
+  font-size: clamp(12px, 1.3vw, 20px);
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  text-shadow: 1px 2px 4px rgba(0, 0, 0, 0.8);
+}
+
+ white-space: nowrap;
+}
+
+header nav a:hover {
+  background: #087be8;
+  color: #ffffff;
+}
+
+/* Mobile navigation */
+@media (max-width: 768px) {
+    header nav {
+        justify-content: center;
+        gap: 6px;
+        padding: 10px;
+        overflow-x: auto;
+        flex-wrap: nowrap;
+        -webkit-overflow-scrolling: touch;
+    }
+  header nav a {
+    font-size: 13px;
+    padding: 9px 11px;
+    flex-shrink: 0;
+    white-space: nowrap;
   }
 }
