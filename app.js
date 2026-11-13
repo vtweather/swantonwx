@@ -713,7 +713,7 @@ const timeToX = timestamp =>
     function drawLine(field, color) {
       ctx.beginPath();
       ctx.strokeStyle = color;
-      ctx.lineWidth = 2.5;
+      ctx.lineWidth = 1.0;
 
       observations.forEach((item, index) => {
        const x = timeToX(item.observed_at);
