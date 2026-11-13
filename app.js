@@ -387,7 +387,7 @@ if (todaysObservations.length > 0) {
     }
 
     const width = Math.max(200, canvas.parentElement.getBoundingClientRect().width - 20);
-    const height = window.innerWidth <= 600 ? 220 : 240;
+    const height = window.innerWidth <= 600 ? 200 : 240;
     const ratio = window.devicePixelRatio || 1;
 
     canvas.width = width * ratio;
@@ -405,7 +405,7 @@ if (todaysObservations.length > 0) {
     ctx.clearRect(0, 0, width, height);
 
     ctx.strokeStyle = "#94a3b8";
-    ctx.fillStyle = "#64748b";
+    ctx.fillStyle = "#ffffff";
     ctx.font = "12px sans-serif";
     ctx.lineWidth = 1;
 
