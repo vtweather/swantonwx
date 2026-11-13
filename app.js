@@ -368,18 +368,41 @@ const dayStart = vermontMidnight(year, month, day);
 const nextDayStart = vermontMidnight(year, month, day + 1);
 const highElement = document.getElementById("daily-high");
 const lowElement = document.getElementById("daily-low");
+const highTimeElement = document.getElementById("daily-high-time");
+const lowTimeElement = document.getElementById("daily-low-time");    
 
 if (todaysObservations.length > 0) {
   const temperatures = todaysObservations.map(item => Number(item.temperature));
 
   const dailyHigh = Math.max(...temperatures);
   const dailyLow = Math.min(...temperatures);
+  const highObservation = todaysObservations.find(item => Number(item.temperature) === dailyHigh);
+const lowObservation = todaysObservations.find(item => Number(item.temperature) === dailyLow);
+  const formatVermontTime = (observation) => {
+  if (!observation) return "Recorded: --";
+
+ const date = parseVermontTime(observation.observed_at);
+  if (Number.isNaN(date.getTime())) return "Recorded: --";
+
+  return "Recorded: " + date.toLocaleString("en-US", {
+    timeZone: "America/New_York",
+    month: "short",
+    day: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+    hour12: true
+  });
+};
 
   if (highElement) highElement.textContent = dailyHigh.toFixed(1) + " °F";
   if (lowElement) lowElement.textContent = dailyLow.toFixed(1) + " °F";
+  if (highTimeElement) highTimeElement.textContent = formatVermontTime(highObservation);
+if (lowTimeElement) lowTimeElement.textContent = formatVermontTime(lowObservation);
 } else {
   if (highElement) highElement.textContent = "-- °F";
   if (lowElement) lowElement.textContent = "-- °F";
+  if (highTimeElement) highTimeElement.textContent = "Recorded: --";
+if (lowTimeElement) lowTimeElement.textContent = "Recorded: --";
 }
     if (observations.length < 2) {
       if (status) status.textContent = "Not enough historical data yet.";
