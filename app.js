@@ -277,7 +277,7 @@ async function loadTemperatureHistory() {
   const canvas = document.getElementById("temperature-chart");
   const status = document.getElementById("history-status");
 
-  if (!canvas || !status) return;
+ if (!canvas) return;
 
   try {
     const response = await fetch(HISTORY_API + "?hours=24");
@@ -371,7 +371,7 @@ if (todaysObservations.length > 0) {
   if (lowElement) lowElement.textContent = "-- °F";
 }
     if (observations.length < 2) {
-      status.textContent = "Not enough historical data yet.";
+      if (status) status.textContent = "Not enough historical data yet.";
       return;
     }
 
@@ -468,14 +468,18 @@ timeLabels.forEach(({ hour, label }) => {
 
 ctx.textAlign = "left";
 
-    status.textContent =
-      "Showing " + observations.length +
-      " observations from the last 24 hours.";
+    if (status) {
+  status.textContent =
+    "Showing " + observations.length +
+    " observations from the last 24 hours.";
+}
 
   } catch (error) {
     console.error("Weather history error:", error);
-    status.textContent =
-      "Unable to load historical weather data.";
+   if (status) {
+  status.textContent =
+    "Unable to load historical weather data.";
+}
   }
 }
 
@@ -487,7 +491,7 @@ async function loadWindHistory() {
   const canvas = document.getElementById("wind-chart");
   const status = document.getElementById("wind-history-status");
 
-  if (!canvas || !status) return;
+  if (!canvas) return;
 
   try {
     const response = await fetch(HISTORY_API + "?hours=48");
@@ -574,7 +578,7 @@ if (gustDisplay) {
 
 
     if (observations.length < 2) {
-      status.textContent = "Not enough wind history yet.";
+      if (status) status.textContent = "Not enough wind history yet.";
       return;
     }
 
@@ -723,14 +727,16 @@ windTimeLabels.forEach((label, index) => {
 
 ctx.textAlign = "left";
 
-status.textContent =
-  "Showing " + observations.length +
-  " wind observations for today (12 AM - 12 AM Vermont time). " +
-  "Blue = Wind Speed | Yellow = Wind Gusts (mph)";
+if (status) {
+  status.textContent =
+    "Showing " + observations.length +
+    " wind observations for today (12 AM - 12 AM Vermont time). " +
+    "Blue = Wind Speed | Yellow = Wind Gusts (mph)";
+}
 
   } catch (error) {
     console.error("Wind history error:", error);
-    status.textContent = "Unable to load wind history.";
+    if (status) status.textContent = "Unable to load wind history.";
   }
 }
 
