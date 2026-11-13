@@ -433,3 +433,23 @@ header nav a:hover {
     padding: 10px 12px;
   }
 }
+
+/* Homepage dashboard layout */
+.dashboard-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  align-items: start;
+}
+
+.dashboard-layout > * {
+  min-width: 0;
+}
+
+/* Mobile layout */
+@media (max-width: 768px) {
+  .dashboard-layout {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+}
