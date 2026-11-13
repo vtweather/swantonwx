@@ -51,28 +51,6 @@ async function loadWeather() {
     document.getElementById("current-rain").textContent =
   valueOrDash(weather.rainTotal, " in");
 
-    // Temperature card
-    document.getElementById("temp-details").textContent =
-      `${valueOrDash(weather.temperature, "°F")} • ` +
-      `Feels like ${valueOrDash(weather.feelsLike, "°F")} • ` +
-      `Humidity ${valueOrDash(weather.humidity, "%")} • ` +
-      `Dew point ${valueOrDash(weather.dewPoint, "°F")}`;
-
-    // Wind card
-    document.getElementById("wind-details").textContent =
-      `${windDirection(weather.windDirection)} ` +
-      `${valueOrDash(weather.windSpeed, " mph")} • ` +
-      `Gust ${valueOrDash(weather.windGust, " mph")}`;
-
-    // Rain card
-    document.getElementById("rain-details").textContent =
-      `Today ${valueOrDash(weather.rainTotal, " in")} • ` +
-      `Rate ${valueOrDash(weather.rainRate, " in/hr")}`;
-
-    // Pressure card
-    document.getElementById("pressure-details").textContent =
-      valueOrDash(weather.pressure, " inHg");
-
     // Last station observation
     if (weather.observationTime) {
       const observed = new Date(weather.observationTime);
