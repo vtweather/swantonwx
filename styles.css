@@ -453,3 +453,16 @@ header nav a:hover {
     gap: 16px;
   }
 }
+
+/* Fix Current Conditions panel width */
+.dashboard-layout .hero {
+  display: block;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+}
+
+.dashboard-layout .current {
+  width: 100%;
+  max-width: none;
+}
