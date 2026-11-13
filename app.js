@@ -38,6 +38,18 @@ async function loadWeather() {
     // Main current temperature
     document.getElementById("temperature").textContent =
       valueOrDash(weather.temperature, "°F");
+    document.getElementById("current-feels-like").textContent =
+  valueOrDash(weather.feelsLike, "°F");
+    document.getElementById("current-dewpoint").textContent =
+  valueOrDash(weather.dewPoint, "°F");
+    document.getElementById("current-humidity").textContent =
+  valueOrDash(weather.humidity, "%");
+    document.getElementById("current-wind").textContent =
+  `${windDirection(weather.windDirection)} ${valueOrDash(weather.windSpeed, " mph")}`;
+    document.getElementById("current-gust").textContent =
+  valueOrDash(weather.windGust, " mph");
+    document.getElementById("current-rain").textContent =
+  valueOrDash(weather.rainTotal, " in");
 
     // Temperature card
     document.getElementById("temp-details").textContent =
