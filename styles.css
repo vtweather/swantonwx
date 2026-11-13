@@ -358,7 +358,21 @@ header nav a:hover {
   text-shadow: 2px 3px 4px #000;
   margin: 8px 0;
 }
+.site-header .weather-word {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+}
 
+.site-header .weather-word::before,
+.site-header .weather-word::after {
+    content: "";
+    width: 100px;
+    height: 4px;
+    background: #00e5ff;
+    flex-shrink: 0;
+}
 .site-header .brand-title p {
   font-size: clamp(11px, 1.45vw, 22px);
   letter-spacing: 0.2em;
