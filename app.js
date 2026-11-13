@@ -439,7 +439,7 @@ if (lowTimeElement) lowTimeElement.textContent = "Recorded: --";
 
     ctx.clearRect(0, 0, width, height);
 
-    ctx.strokeStyle = "#94a3b8";
+    ctx.strokeStyle = "#64748b";
     ctx.fillStyle = "#ffffff";
     ctx.font = "12px sans-serif";
     ctx.lineWidth = 1;
