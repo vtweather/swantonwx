@@ -474,3 +474,26 @@ header nav a:hover {
   min-width: 0;
   flex: 1;
 }
+
+/* Weather Alerts dashboard card */
+.dashboard-layout #alert-box {
+  background: linear-gradient(145deg, #103b60, #071d35);
+  border: 1px solid #4b9ce5;
+  border-radius: 22px;
+  border-left: 1px solid #4b9ce5;
+  padding: 24px 30px;
+  min-height: 170px;
+}
+
+.dashboard-layout #alert-box h2 {
+  font-size: 28px;
+  color: #ffffff;
+  margin: 0 0 18px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #82b6dc;
+}
+
+.dashboard-layout #alert-box #alert-title {
+  display: block;
+  margin-bottom: 10px;
+}
