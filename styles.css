@@ -341,11 +341,12 @@ header nav a:hover {
 
 .site-header .brand-title h1 {
   font-family: Georgia, "Times New Roman", serif;
-  font-size: clamp(42px, 6.8vw, 112px);
+  font-size: clamp(28px, 4vw, 72px);
   font-weight: bold;
   line-height: 0.95;
   letter-spacing: -2px;
   margin: 0;
+  white-space: nowrap;
   color: white;
   text-shadow: 3px 4px 5px #000;
 }
