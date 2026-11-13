@@ -498,6 +498,26 @@ header nav a:hover {
   margin-bottom: 10px;
 }
 
+/* Match reference Weather Alerts panel */
+.dashboard-layout #alert-box {
+  border: 1px solid #4b9ce5 !important;
+  border-left: 1px solid #4b9ce5 !important;
+  box-shadow: none;
+}
 
-ttom: 20px;
+.dashboard-layout #alert-box h2 {
+  border-bottom: 1px solid #82b6dc;
+  padding-bottom: 16px;
+  margin-bottom: 20px;
+}
+
+/* Hide empty alert title and refine message spacing */
+.dashboard-layout #alert-title:empty {
+  display: none;
+}
+
+.dashboard-layout #alert-message {
+  margin-top: 0;
+  font-size: 17px;
+  line-height: 1.5;
 }
