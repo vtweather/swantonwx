@@ -341,16 +341,27 @@ const month = getPart("month");
 const day = getPart("day");
 
 function vermontMidnight(y, m, d) {
-  const date = new Date(Date.UTC(y, m - 1, d, 12));
-
-  const zone = new Intl.DateTimeFormat("en-US", {
+  const target = new Date(Date.UTC(y, m - 1, d));
+  const formatter = new Intl.DateTimeFormat("en-US", {
     timeZone: "America/New_York",
     timeZoneName: "shortOffset"
-  }).format(date);
+  });
 
-  const offsetHours = zone.includes("-4") ? 4 : 5;
+  for (let i = 0; i < 3; i++) {
+    const parts = formatter.formatToParts(target);
+    const zone = parts.find(p => p.type === "timeZoneName").value;
+    const match = zone.match(/GMT([+-])(\d{1,2})(?::(\d{2}))?/);
+    const offsetMinutes = match
+      ? (match[1] === "+" ? 1 : -1) *
+        (Number(match[2]) * 60 + Number(match[3] || 0))
+      : 0;
 
-  return Date.UTC(y, m - 1, d, offsetHours);
+    target.setTime(
+      Date.UTC(y, m - 1, d) - offsetMinutes * 60000
+    );
+  }
+
+  return target;
 }
 
 const dayStart = vermontMidnight(year, month, day);
