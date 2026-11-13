@@ -99,7 +99,14 @@ header {
     padding: 18px;
   }
 }
-
+/* Mobile banner subtitle adjustment */
+@media (max-width: 550px) {
+    .site-header .brand-title p {
+        font-size: 10px;
+        letter-spacing: 0.08em;
+        line-height: 1.4;
+    }
+}
 /* Daily High and Low Temperature Cards */
 
 .daily-extremes {
