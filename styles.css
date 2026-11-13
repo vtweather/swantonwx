@@ -437,7 +437,7 @@ header nav a:hover {
 /* Homepage dashboard layout */
 .dashboard-layout {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: 24px;
   align-items: start;
 }
@@ -465,4 +465,12 @@ header nav a:hover {
 .dashboard-layout .current {
   width: 100%;
   max-width: none;
+}
+
+/* Expand Current Conditions to full column width */
+.dashboard-layout .hero .current {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  flex: 1;
 }
