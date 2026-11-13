@@ -438,7 +438,8 @@ header nav a:hover {
 .dashboard-layout {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  gap: 24px;
+  column-gap: 24px;
+  row-gap: 12px;
   align-items: start;
 }
 
@@ -602,8 +603,12 @@ header nav a:hover {
 
 @media (min-width: 769px) {
   .dashboard-layout {
-    grid-template-rows: auto auto;
+    grid-template-rows: min-content min-content;
     align-content: start;
     row-gap: 20px;
   }
+}
+
+.dashboard-layout #alerts {
+  margin-bottom: 18px;
 }
