@@ -280,7 +280,7 @@ async function loadTemperatureHistory() {
  if (!canvas) return;
 
   try {
-    const response = await fetch(HISTORY_API + "?hours=24");
+    const response = await fetch(HISTORY_API + "?hours=48");
 
     if (!response.ok) {
       throw new Error("History request failed");
