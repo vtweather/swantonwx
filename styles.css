@@ -466,6 +466,7 @@ header nav a:hover {
 .dashboard-layout .current {
   width: 100%;
   max-width: none;
+  background: linear-gradient(145deg, #103b60, #071d35);
 }
 
 /* Expand Current Conditions to full column width */
