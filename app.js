@@ -396,7 +396,7 @@ if (todaysObservations.length > 0) {
     const ctx = canvas.getContext("2d");
     ctx.scale(ratio, ratio);
 
-    const padding = 65;
+    const padding = 35;
     const temps = todaysObservations.map(item => item.temperature);
     const min = Math.floor(Math.min(...temps) - 2);
     const max = Math.ceil(Math.max(...temps) + 2);
