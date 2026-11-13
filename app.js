@@ -387,7 +387,7 @@ if (todaysObservations.length > 0) {
     }
 
     const width = Math.max(200, canvas.parentElement.getBoundingClientRect().width - 20);
-    const height = window.innerWidth <= 600 ? 200 : 240;
+    const height = window.innerWidth <= 600 ? 220 : 240;
     const ratio = window.devicePixelRatio || 1;
 
     canvas.width = width * ratio;
