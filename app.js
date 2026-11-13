@@ -386,7 +386,7 @@ if (todaysObservations.length > 0) {
     ctx.scale(ratio, ratio);
 
     const padding = 65;
-    const temps = observations.map(item => item.temperature);
+    const temps = todaysObservations.map(item => item.temperature);
     const min = Math.floor(Math.min(...temps) - 2);
     const max = Math.ceil(Math.max(...temps) + 2);
     const range = max - min || 1;
@@ -420,7 +420,7 @@ if (todaysObservations.length > 0) {
     ctx.lineWidth = 3;
     ctx.beginPath();
 
-    observations.forEach((item, index) => {
+    todaysObservations.forEach((item, index) => {
        const x = padding +
     ((parseVermontTime(item.observed_at).getTime() - dayStart) /
     (nextDayStart - dayStart)) *
