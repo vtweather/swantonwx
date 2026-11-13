@@ -586,3 +586,24 @@ header nav a:hover {
   font-weight: 800;
   margin: 8px 0;
 }
+
+/* Keep the right dashboard panels close together */
+.dashboard-layout {
+  align-items: start;
+}
+
+.dashboard-layout #alerts {
+  align-self: start;
+}
+
+.dashboard-layout #today-high-low {
+  align-self: start;
+}
+
+@media (min-width: 769px) {
+  .dashboard-layout {
+    grid-template-rows: auto auto;
+    align-content: start;
+    row-gap: 20px;
+  }
+}
