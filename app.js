@@ -129,7 +129,7 @@ async function loadAlerts() {
 
     // No active alerts
     if (!data.alerts || data.alerts.length === 0) {
-      title.textContent = "No Active Weather Alerts";
+      title.textContent = "";
       message.textContent =
         "There are currently no active National Weather Service alerts for the Swanton area.";
       details.innerHTML = "";
